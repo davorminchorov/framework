@@ -279,6 +279,20 @@ class EventFake implements Dispatcher
     }
 
     /**
+     * Flush multiple events at once.
+     *
+     * @param  array<int, object>  $events
+     *
+     * @return void
+     */
+    public function flushMultiple(array $events): void
+    {
+        foreach ($events as $event) {
+            $this->flush(event: $event::class);
+        }
+    }
+
+    /**
      * Fire an event and call the listeners.
      *
      * @param  string|object  $event
@@ -294,6 +308,19 @@ class EventFake implements Dispatcher
             $this->events[$name][] = func_get_args();
         } else {
             return $this->dispatcher->dispatch($event, $payload, $halt);
+        }
+    }
+
+    /**
+     * Dispatch multiple events at once and call the listeners.
+     *
+     * @param  array<int, object>  $events
+     * @return void
+     */
+    public function dispatchMultiple(array $events): void
+    {
+        foreach ($events as $event) {
+            $this->dispatch($event::class, get_class_vars($event::class));
         }
     }
 

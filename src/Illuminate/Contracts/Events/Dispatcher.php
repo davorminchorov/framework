@@ -49,6 +49,13 @@ interface Dispatcher
     public function dispatch($event, $payload = [], $halt = false);
 
     /**
+     * Dispatch multiple events at once and call the listeners.
+     *
+     * @param  array<int, object>  $events
+     */
+    public function dispatchMultiple(array $events): void;
+
+    /**
      * Register an event and payload to be fired later.
      *
      * @param  string  $event
@@ -64,6 +71,15 @@ interface Dispatcher
      * @return void
      */
     public function flush($event);
+
+    /**
+     * Flush multiple events at once.
+     *
+     * @param  array<int, object>  $events
+     *
+     * @return void
+     */
+    public function flushMultiple(array $events): void;
 
     /**
      * Remove a set of listeners from the dispatcher.
