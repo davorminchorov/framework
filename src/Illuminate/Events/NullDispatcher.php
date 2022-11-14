@@ -41,6 +41,19 @@ class NullDispatcher implements DispatcherContract
     }
 
     /**
+     * Don't fire multiple events.
+     *
+     * @param  array<int, object>  $events
+     * @return void
+     */
+    public function dispatchMultiple(array $events): void
+    {
+        foreach ($events as $event) {
+            $this->dispatch($event::class, get_class_vars($event::class));
+        }
+    }
+
+    /**
      * Don't register an event and payload to be fired later.
      *
      * @param  string  $event
@@ -107,6 +120,20 @@ class NullDispatcher implements DispatcherContract
     public function flush($event)
     {
         $this->dispatcher->flush($event);
+    }
+
+    /**
+     * Flush multiple events at once.
+     *
+     * @param  array<int, object>  $events
+     *
+     * @return void
+     */
+    public function flushMultiple(array $events): void
+    {
+        foreach ($events as $event) {
+            $this->flush(event: $event::class);
+        }
     }
 
     /**
